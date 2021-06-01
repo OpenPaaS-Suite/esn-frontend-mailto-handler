@@ -41,23 +41,23 @@ describe('The opInboxCompose directive', function() {
   }
 
   it('should call the open fn when clicked on mailto link', function() {
-    emailElement = compileDirective('<a ng-href="mailto:SOMEONE" op-inbox-compose/>');
+    emailElement = compileDirective('<a ng-href="mailto:SOMEONE" op-inbox-compose op-inbox-compose-subject=TEST/>');
     $window.open = sinon.spy();
 
     emailElement.click();
-    expect($window.open).to.have.been.calledWith('http://localhost:9876/mailto/?uri=mailto:SOMEONE', '_blank');
+    expect($window.open).to.have.been.calledWith('http://localhost:9876/mailto/?uri=mailto:SOMEONE&subject=TEST', '_blank');
   });
 
   it('should call the open fn when put email in opInboxCompose attribute', function() {
-    emailElement = compileDirective('<a op-inbox-compose="SOMEONE"/>');
+    emailElement = compileDirective('<a op-inbox-compose="SOMEONE" op-inbox-compose-subject=TEST/>');
     $window.open = sinon.spy();
 
     emailElement.click();
-    expect($window.open).to.have.been.calledWith('http://localhost:9876/mailto/?uri=mailto:SOMEONE', '_blank');
+    expect($window.open).to.have.been.calledWith('http://localhost:9876/mailto/?uri=mailto:SOMEONE&subject=TEST', '_blank');
   });
 
   it('should call the preventDefault and stopPropagation fn when clicked on mailto link', function() {
-    emailElement = compileDirective('<a ng-href="mailto:SOMEONE" op-inbox-compose/>');
+    emailElement = compileDirective('<a ng-href="mailto:SOMEONE" op-inbox-compose op-inbox-compose-subject=TEST/>');
     var event = {
       type: 'click',
       preventDefault: sinon.spy(),
@@ -98,78 +98,78 @@ describe('The opInboxCompose directive', function() {
   });
 
   it('should call the open fn with correct email', function() {
-    emailElement = compileDirective('<a ng-href="mailto:SOMEONE" op-inbox-compose/>');
+    emailElement = compileDirective('<a ng-href="mailto:SOMEONE" op-inbox-compose op-inbox-compose-subject=TEST/>');
     $window.open = sinon.spy();
 
     emailElement.trigger('click');
 
-    expect($window.open).to.have.been.calledWith('http://localhost:9876/mailto/?uri=mailto:SOMEONE', '_blank');
+    expect($window.open).to.have.been.calledWith('http://localhost:9876/mailto/?uri=mailto:SOMEONE&subject=TEST', '_blank');
   });
 
   it('should it should use the email address as the display name if display name is not defined', function() {
-    emailElement = compileDirective('<a op-inbox-compose ng-href="mailto:SOMEONE"/>');
+    emailElement = compileDirective('<a op-inbox-compose ng-href="mailto:SOMEONE" op-inbox-compose-subject=TEST/>');
     $window.open = sinon.spy();
 
     emailElement.trigger('click');
 
-    expect($window.open).to.have.been.calledWith('http://localhost:9876/mailto/?uri=mailto:SOMEONE', '_blank');
+    expect($window.open).to.have.been.calledWith('http://localhost:9876/mailto/?uri=mailto:SOMEONE&subject=TEST', '_blank');
   });
   describe('window size', function() {
     it('should look at op-inbox-compose-width to set width', function() {
-      emailElement = compileDirective('<a op-inbox-compose ng-href="mailto:SOMEONE" op-inbox-compose-width="1000" />');
+      emailElement = compileDirective('<a op-inbox-compose ng-href="mailto:SOMEONE" op-inbox-compose-width="1000" op-inbox-compose-subject=TEST/>');
       $window.open = sinon.spy();
       $window.screen = { height: 2000, width: 2000 };
 
       emailElement.trigger('click');
 
-      expect($window.open).to.have.been.calledWith('http://localhost:9876/mailto/?uri=mailto:SOMEONE', '_blank', 'width=1000,height=600,menubar=no,toolbar=no,status=no,top=700,left=500');
+      expect($window.open).to.have.been.calledWith('http://localhost:9876/mailto/?uri=mailto:SOMEONE&subject=TEST', '_blank', 'width=1000,height=600,menubar=no,toolbar=no,status=no,top=700,left=500');
     });
 
     it('should look at op-inbox-compose-height to set height', function() {
-      emailElement = compileDirective('<a op-inbox-compose ng-href="mailto:SOMEONE" op-inbox-compose-height="1000" />');
+      emailElement = compileDirective('<a op-inbox-compose ng-href="mailto:SOMEONE" op-inbox-compose-height="1000" op-inbox-compose-subject=TEST />');
       $window.open = sinon.spy();
       $window.screen = { height: 2000, width: 2000 };
 
       emailElement.trigger('click');
 
-      expect($window.open).to.have.been.calledWith('http://localhost:9876/mailto/?uri=mailto:SOMEONE', '_blank', 'width=800,height=1000,menubar=no,toolbar=no,status=no,top=500,left=600');
+      expect($window.open).to.have.been.calledWith('http://localhost:9876/mailto/?uri=mailto:SOMEONE&subject=TEST', '_blank', 'width=800,height=1000,menubar=no,toolbar=no,status=no,top=500,left=600');
     });
 
     it('should choose screen width when smaller than asked width', function() {
-      emailElement = compileDirective('<a op-inbox-compose ng-href="mailto:SOMEONE" op-inbox-compose-width="1000" />');
+      emailElement = compileDirective('<a op-inbox-compose ng-href="mailto:SOMEONE" op-inbox-compose-width="1000" op-inbox-compose-subject=TEST />');
       $window.open = sinon.spy();
       $window.screen = { height: 2000, width: 200 };
 
       emailElement.trigger('click');
 
-      expect($window.open).to.have.been.calledWith('http://localhost:9876/mailto/?uri=mailto:SOMEONE', '_blank', 'width=200,height=600,menubar=no,toolbar=no,status=no,top=700,left=0');
+      expect($window.open).to.have.been.calledWith('http://localhost:9876/mailto/?uri=mailto:SOMEONE&subject=TEST', '_blank', 'width=200,height=600,menubar=no,toolbar=no,status=no,top=700,left=0');
     });
 
     it('should choose screen height when smaller than asked width', function() {
-      emailElement = compileDirective('<a op-inbox-compose ng-href="mailto:SOMEONE" op-inbox-compose-height="1000" />');
+      emailElement = compileDirective('<a op-inbox-compose ng-href="mailto:SOMEONE" op-inbox-compose-height="1000" op-inbox-compose-subject=TEST/>');
       $window.open = sinon.spy();
       $window.screen = { height: 200, width: 2000 };
 
       emailElement.trigger('click');
 
-      expect($window.open).to.have.been.calledWith('http://localhost:9876/mailto/?uri=mailto:SOMEONE', '_blank', 'width=800,height=200,menubar=no,toolbar=no,status=no,top=0,left=600');
+      expect($window.open).to.have.been.calledWith('http://localhost:9876/mailto/?uri=mailto:SOMEONE&subject=TEST', '_blank', 'width=800,height=200,menubar=no,toolbar=no,status=no,top=0,left=600');
     });
   });
 
   describe('window positioning', function() {
     it('should center the window horizontally and vertically', function() {
-      emailElement = compileDirective('<a op-inbox-compose ng-href="mailto:SOMEONE" op-inbox-compose-width="1000" op-inbox-compose-height="800" />');
+      emailElement = compileDirective('<a op-inbox-compose ng-href="mailto:SOMEONE" op-inbox-compose-width="1000" op-inbox-compose-height="800"  op-inbox-compose-subject=TEST/>');
       $window.open = sinon.spy();
       $window.screen = { height: 2000, width: 2000 };
 
       emailElement.trigger('click');
 
-      expect($window.open).to.have.been.calledWith('http://localhost:9876/mailto/?uri=mailto:SOMEONE', '_blank', 'width=1000,height=800,menubar=no,toolbar=no,status=no,top=600,left=500');
+      expect($window.open).to.have.been.calledWith('http://localhost:9876/mailto/?uri=mailto:SOMEONE&subject=TEST', '_blank', 'width=1000,height=800,menubar=no,toolbar=no,status=no,top=600,left=500');
     });
   });
 
   it('should use sensible default when window.screen is not exposed', function() {
-    emailElement = compileDirective('<a op-inbox-compose ng-href="mailto:SOMEONE" />');
+    emailElement = compileDirective('<a op-inbox-compose ng-href="mailto:SOMEONE" op-inbox-compose-subject=TEST/>');
     $window.open = sinon.spy();
     $window.screen = null;
 
@@ -177,11 +177,11 @@ describe('The opInboxCompose directive', function() {
 
     const expected = `width=${MAILTOHANDLER_CONSTANTS.windowWidth},height=${MAILTOHANDLER_CONSTANTS.windowHeight},menubar=no,toolbar=no,status=no,top=0,left=0`;
 
-    expect($window.open).to.have.been.calledWith('http://localhost:9876/mailto/?uri=mailto:SOMEONE', '_blank', expected);
+    expect($window.open).to.have.been.calledWith('http://localhost:9876/mailto/?uri=mailto:SOMEONE&subject=TEST', '_blank', expected);
   });
 
   it('should use sensible default when window.screen.(width|height) are not exposed', function() {
-    emailElement = compileDirective('<a op-inbox-compose ng-href="mailto:SOMEONE" />');
+    emailElement = compileDirective('<a op-inbox-compose ng-href="mailto:SOMEONE" op-inbox-compose-subject=TEST/>');
     $window.open = sinon.spy();
     $window.screen = {};
 
@@ -189,6 +189,6 @@ describe('The opInboxCompose directive', function() {
 
     const expected = `width=${MAILTOHANDLER_CONSTANTS.windowWidth},height=${MAILTOHANDLER_CONSTANTS.windowHeight},menubar=no,toolbar=no,status=no,top=0,left=0`;
 
-    expect($window.open).to.have.been.calledWith('http://localhost:9876/mailto/?uri=mailto:SOMEONE', '_blank', expected);
+    expect($window.open).to.have.been.calledWith('http://localhost:9876/mailto/?uri=mailto:SOMEONE&subject=TEST', '_blank', expected);
   });
 });

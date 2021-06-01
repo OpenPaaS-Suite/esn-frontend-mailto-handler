@@ -73,19 +73,20 @@ const _ = require('lodash');
                 };
               });
             }
+            const emailTitle = attrs.opInboxComposeSubject;
 
-            $window.open(getMailtoUrl(targets), '_blank', getWindowAttributes());
+            $window.open(getMailtoUrl(targets, emailTitle), '_blank', getWindowAttributes());
           }
         });
       }
     };
 
-    function getMailtoUrl(targets) {
+    function getMailtoUrl(targets, emailTitle) {
       const recipients = targets.map(function(target) {
         return target.email;
       }).join(',');
 
-      return new URL('/mailto/?uri=mailto:' + encodeURIComponent(recipients), $window.location.origin).toString();
+      return new URL('/mailto/?uri=mailto:' + encodeURIComponent(recipients) + '&subject=' + encodeURIComponent(emailTitle), $window.location.origin).toString();
     }
   }
 
